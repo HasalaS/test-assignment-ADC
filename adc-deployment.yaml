@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adc-gandalf
+  namespace: adc
+  labels:
+    app: adc-gandalf
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: adc-gandalf
+  template:
+    metadata:
+      labels:
+        app: adc-gandalf
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+    spec:
+      containers:
+        - name: adc-gandalf
+          image: <ECR-REPO>/adc-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
