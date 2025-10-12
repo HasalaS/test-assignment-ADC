@@ -28,9 +28,9 @@ As well as there is a prometheus server deployed vm will run by capturing the me
 
 This simple python application gives responses based on the requested URI and updates Prometheus counters for observability:
 
-- Show Gandalf's picture when accessing /gandalf
-- Current time now Colombo City (Sri Lanka) when accessing /colombo 
-- Show captured metrics via /metrics
+- Show Gandalf's picture when accessing *ELB-DNS*/gandalf
+- Current time now Colombo City (Sri Lanka) when accessing *ELB-DNS*/colombo 
+- Show captured metrics via *ELB-DNS*/metrics
 
 This app will follow following deployment stages
 
@@ -46,7 +46,7 @@ This app will follow following deployment stages
 - Now change the configuration as per the attached prometheus.yml in this repo, which will set the target to above application metrics
 - Start Prometheus manually or setup it as a systemd service to run as background service.
 - Then setup a Static IP Address to this Light-Sail instance via Networking on the aws console
-- Now you can access the Prometheus dashboard via <Instance-Public-IP>:9090
+- Now you can access the Prometheus dashboard via *Instance-Public-IP*:9090
 
 ## **Referrence**
 
