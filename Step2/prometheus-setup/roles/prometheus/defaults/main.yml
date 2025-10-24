@@ -1,0 +1,12 @@
+prometheus_scrape_interval: 15s
+prometheus_user: prometheus
+prometheus_group: prometheus
+prometheus_binary_path: /home/prometheus/prometheus/prometheus
+prometheus_config_file: /home/prometheus/prometheus/prometheus.yml
+prometheus_data_path: /home/prometheus/prometheus/data
+prometheus_console_templates: /home/prometheus/prometheus/consoles
+prometheus_console_libraries: /home/prometheus/prometheus/console_libraries
+prometheus_working_directory_path: /home/prometheus/prometheus
+load_balancer_dns: <cluster_load_balancer_dns>
+prometheus_port: 9090
+target_port: 80

@@ -1,0 +1,13 @@
+- name: Restart Prometheus
+  block:
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
+      become: yes
+
+    - name: Restart Prometheus service
+      systemd:
+        name: prometheus
+        state: restarted
+        enabled: yes
+      become: yes

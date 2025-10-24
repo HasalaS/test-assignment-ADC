@@ -1,0 +1,6 @@
+---
+- name: Install and configure Prometheus on Lightsail
+  hosts: prometheus
+  become: yes
+  roles:
+    - prometheus

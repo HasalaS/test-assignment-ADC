@@ -41,16 +41,25 @@ This app will follow following deployment stages
 
 ## **Prometheus Server Deployment**
 
-- First create a Light-Sail instance and access to it via ssh.
-- Once access download the Prometheus via [Prometheus Releases](https://github.com/prometheus/prometheus/releases)
-- Now change the configuration as per the attached prometheus.yml in this repo, which will set the target to above application metrics
-- Start Prometheus manually or setup it as a systemd service to run as background service.
-- Then setup a Static IP Address to this Light-Sail instance via Networking on the aws console
+- First, create a Lightsail instance using Terraform.
+- Terraform will automatically allocate and attach a static public IP to the instance.
+- Once provisioning is complete, Terraform will output the public IP address and instance username for Ansible to use.
+- Access key is already created.
+- Run the Ansible playbook to automate the Prometheus setup on the Lightsail instance.
+- The playbook will:
+    - Create the required Prometheus system user and directories.
+    - Download the Prometheus package from the official [Prometheus Releases](https://github.com/prometheus/prometheus/releases)
+    - Extract the files and move them to the Prometheus working directory.
+    - Copy the customized prometheus.yml configuration (from template) to set up the monitoring targets.
+    - Install and configure Prometheus as a systemd service.
+    - Reload the systemd daemon, enable, and start the Prometheus service automatically.
+    - Clean up temporary installation files.
 - Now you can access the Prometheus dashboard via *Instance-Public-IP*:9090
 
 ## **Referrence**
 
 - [Terraform AWS modules](https://registry.terraform.io/namespaces/terraform-aws-modules)
-- [Hashicorp AWS provider](https://registry.terraform.io/providers/hashicorp/aws/5.24.0)
+- [Hashicorp AWS provider](https://registry.terraform.io/providers/hashicorp/aws/)
 - [FastApi](https://fastapi.tiangolo.com/)
 - [Prometheus-Client](https://pypi.org/project/prometheus-client/)
+- [Ansible documentation](https://docs.ansible.com/)
