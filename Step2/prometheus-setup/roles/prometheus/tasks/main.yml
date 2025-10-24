@@ -1,0 +1,59 @@
+---
+
+- name: Create prometheus user
+  user:
+    name: "{{ prometheus_user }}"
+    shell: /sbin/nologin
+    system: yes
+
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+    mode: '0755'
+  loop:
+    - "{{ prometheus_working_directory_path }}"
+    - "{{ prometheus_data_path }}"
+
+- name: Download Prometheus
+  get_url:
+    url: "https://github.com/prometheus/prometheus/releases/download/v3.7.0/prometheus-3.7.0.linux-amd64.tar.gz"
+    dest: /home/prometheus/prometheus.tar.gz
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+
+- name: Extract Prometheus
+  unarchive:
+    src: /home/prometheus/prometheus.tar.gz
+    dest: /home/prometheus/
+    remote_src: yes
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+
+- name: Move all Prometheus files to prometheus folder
+  shell: mv /home/prometheus/prometheus-3.7.0.linux-amd64/* /home/prometheus/prometheus/
+
+- name: Remove Prometheus tar.gz after extraction
+  file:
+    path: /home/prometheus/prometheus.tar.gz
+    state: absent
+
+- name: Copy Prometheus configuration
+  template:
+    src: prometheus.conf.j2
+    dest: "{{ prometheus_config_file }}"
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+    mode: '0644'
+
+- name: Install Prometheus systemd service
+  template:
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Prometheus
+  become: yes

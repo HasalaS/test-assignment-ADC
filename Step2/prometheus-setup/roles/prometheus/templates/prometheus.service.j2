@@ -1,0 +1,22 @@
+[Unit]
+Description=ADC Prometheus Server
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User={{ prometheus_user }}
+Group={{ prometheus_group }}
+Type=simple
+WorkingDirectory={{ prometheus_working_directory_path }}
+ExecStart={{ prometheus_binary_path }} \
+  --config.file={{ prometheus_config_file }} \
+  --storage.tsdb.path={{ prometheus_data_path }} \
+  --web.console.templates={{ prometheus_console_templates }} \
+  --web.console.libraries={{ prometheus_console_libraries }} \
+  --web.listen-address=:{{ prometheus_port }}
+
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
